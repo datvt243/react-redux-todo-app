@@ -1,0 +1,57 @@
+import { Dropdown } from 'bootstrap';
+import { v4 as uuidv4 } from 'uuid';
+import React, { useState, useEffect } from 'react';
+
+interface iProps {
+    text: string;
+    disabled?: boolean;
+    className?: string;
+    directions?: string;
+    children?: React.ReactNode;
+}
+
+function ReactDropdown({ text, className = '', directions, disabled = false, children }: iProps) {
+    const [dropdownId] = useState(() => {
+        return createRandomId();
+    });
+
+    const [elmBootstrap, setElmBootstrap] = useState<{
+        toggle: () => void;
+    } | null>(null);
+
+    useEffect(() => {
+        setElmBootstrap(() => {
+            const elm: HTMLElement | null = document.getElementById(dropdownId);
+            return elm ? new Dropdown(elm) : null;
+        });
+    }, [dropdownId]);
+    function createRandomId() {
+        return 'Dropdown_' + uuidv4();
+    }
+
+    return (
+        <div className={['btn-group', directions].join(' ')}>
+            {text && (
+                <button type="button" className={[className, 'btn btn-secondary btn-sm'].join(' ')} disabled={disabled}>
+                    {text}
+                </button>
+            )}
+            <button
+                id={dropdownId}
+                type="button"
+                className={`${className} dropdown-toggle dropdown-toggle-split ${!text && 'rounded'}`}
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                disabled={disabled}
+                onClick={() => {
+                    elmBootstrap?.toggle();
+                }}
+            >
+                <span className="visually-hidden">x</span>
+            </button>
+            <ul className="dropdown-menu">{children}</ul>
+        </div>
+    );
+}
+
+export default ReactDropdown;
