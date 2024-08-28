@@ -57,7 +57,7 @@ export const todoSlice = createSlice({
             };
             state.list.push(newItem);
 
-            localStorage.setItem('list', JSON.stringify(state.list));
+            /* localStorage.setItem('list', JSON.stringify(state.list)); */
 
             /* const newItem: iTodoItem = {
                 id: uuidv4(),
@@ -104,7 +104,7 @@ export const todoSlice = createSlice({
             const index = state.list.findIndex((item) => item.id === action.payload.id);
             if (index !== -1) {
                 state.list[index] = action.payload;
-                localStorage.setItem('list', JSON.stringify(state.list));
+                /* localStorage.setItem('list', JSON.stringify(state.list)); */
             }
         },
         markAsRead(state, action: PayloadAction<string>) {
